@@ -22,6 +22,8 @@ export class FeedMessage extends jspb.Message {
   static serializeBinaryToWriter(message: FeedMessage, writer: jspb.BinaryWriter): void;
   static deserializeBinary(bytes: Uint8Array): FeedMessage;
   static deserializeBinaryFromReader(message: FeedMessage, reader: jspb.BinaryReader): FeedMessage;
+
+  
 }
 
 export namespace FeedMessage {
