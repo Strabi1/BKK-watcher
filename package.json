@@ -9,13 +9,17 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": ["onStartupFinished"],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "bkkwatcher.watch",
-        "title": "Watch the bus"
+        "command": "bkkwatcher.enable",
+        "title": "Enable BKK Watcher"
+      },
+      {
+        "command": "bkkwatcher.disable",
+        "title": "Disable BKK Watcher"
       }
     ]
   },

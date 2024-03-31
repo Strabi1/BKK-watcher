@@ -65,6 +65,7 @@ const stopId = 'F00496';            // Huba street
 
 let folder: string;
 let protoFile: string;
+let isEnabled: boolean = true;
 
 export function activate(context: vscode.ExtensionContext) {
 	folder = vscode.workspace.workspaceFolders![0].uri.fsPath;
@@ -76,11 +77,32 @@ export function activate(context: vscode.ExtensionContext) {
 		tripsLabel.show();
 		context.subscriptions.push(tripsLabel);
 
-	context.subscriptions.push(
-		vscode.commands.registerCommand('bkkwatcher.watch', async () => {
+		const modifyTripsLabel = async () => {
 			const trips = await readAndProcessTrips();
 			if(trips.length)
-				tripsLabel.text = trips;
+			tripsLabel.text = trips;
+	}
+	
+	modifyTripsLabel();
+	
+	let interval = setInterval(modifyTripsLabel, 15000);
+
+    context.subscriptions.push(new vscode.Disposable(() => clearInterval(interval)));
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('bkkwatcher.enable', async () => {
+			if(!isEnabled) {
+				modifyTripsLabel();
+				interval = setInterval(modifyTripsLabel, 15000);
+				isEnabled = true;
+			}	
+		}),
+		vscode.commands.registerCommand('bkkwatcher.disable', async () => {
+			if(isEnabled) {
+				tripsLabel.text =  '134 Huba street';
+				clearInterval(interval);
+				isEnabled = false;
+			}	
 		})
 	);
 }
@@ -176,7 +198,7 @@ function createTimeString(times: number[]): string {
 			+ ' (' + diffStr + ')';
 
 		// console.log(timeStr);
-		timesStr += timeStr + ' ';
+		timesStr += timeStr + '  ';
 	})
 
 	return timesStr;
