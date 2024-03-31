@@ -66,6 +66,7 @@ const stopId = 'F00496';            // Huba street
 let folder: string;
 let protoFile: string;
 let isEnabled: boolean = true;
+const maxTripCount = 3;
 
 export function activate(context: vscode.ExtensionContext) {
 	folder = vscode.workspace.workspaceFolders![0].uri.fsPath;
@@ -169,6 +170,7 @@ function createTimeString(times: number[]): string {
 		return String();
 
 	let timesStr = "";
+	let cnt = 0;
 
 	times.forEach(time  => {
 		const date = new Date(time*1000);
@@ -179,8 +181,10 @@ function createTimeString(times: number[]): string {
 		diffDate.getTimezoneOffset()
 		let diffStr: string = '';
 
-		if(diff < -30 * 1000)
+		if(cnt >= maxTripCount && diff < -30 * 1000)
 			return;
+
+		++cnt;
 
 		if(diff < 0)
 			diffStr = 'now';
