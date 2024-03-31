@@ -72,7 +72,7 @@ export function activate(context: vscode.ExtensionContext) {
 	folder = vscode.workspace.workspaceFolders![0].uri.fsPath;
 	protoFile = path.join(folder, "gtfs-realtime.proto");
 
-	let tripsLabel = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 3);
+	let tripsLabel = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 2);
 		tripsLabel.text =  '134 Huba street';
 		tripsLabel.tooltip = 'Bus 134, Huba street';
 		tripsLabel.show();
