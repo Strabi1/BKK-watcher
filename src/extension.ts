@@ -70,25 +70,35 @@ export function activate(context: vscode.ExtensionContext) {
 	folder = vscode.workspace.workspaceFolders![0].uri.fsPath;
 	protoFile = path.join(folder, "gtfs-realtime.proto");
 
+	let tripsLabel = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 3);
+		tripsLabel.text =  '134 Huba street';
+		tripsLabel.tooltip = 'Bus 134, Huba street';
+		tripsLabel.show();
+		context.subscriptions.push(tripsLabel);
+
 	context.subscriptions.push(
 		vscode.commands.registerCommand('bkkwatcher.watch', async () => {
-			await readAndProcessTrips();
+			const trips = await readAndProcessTrips();
+			if(trips.length)
+				tripsLabel.text = trips;
 		})
 	);
 }
 
 export function deactivate() {}
 
-async function readAndProcessTrips() {
+async function readAndProcessTrips(): Promise<string> {
 	const message = await readTrips();
 
 	if(message == undefined)
-		return;
+		return String();
 
 	const times = sortTrips(message);
 	const timesStr = createTimeString(times);
 	
 	console.log(timesStr);
+
+	return timesStr;
 }
 
 async function readTrips(): Promise<FeedMessage | undefined> {
@@ -166,7 +176,7 @@ function createTimeString(times: number[]): string {
 			+ ' (' + diffStr + ')';
 
 		// console.log(timeStr);
-		timesStr += timeStr + '\n';
+		timesStr += timeStr + ' ';
 	})
 
 	return timesStr;
