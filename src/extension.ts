@@ -181,7 +181,7 @@ function createTimeString(times: number[]): string {
 		diffDate.getTimezoneOffset()
 		let diffStr: string = '';
 
-		if(cnt >= maxTripCount && diff < -30 * 1000)
+		if(cnt >= maxTripCount || diff < -30 * 1000)
 			return;
 
 		++cnt;
