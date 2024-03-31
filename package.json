@@ -1,14 +1,20 @@
 {
   "name": "bkkwatcher",
   "displayName": "BKK Watcher",
-  "description": "",
+  "description": "Shows in real time when the next bus will arrive for the given bus route and given stop",
+  "publisher": "StrahlBalazs",
+  "icon": "resources/icon.png",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.87.0"
+    "vscode": "^1.42.0"
   },
   "categories": [
     "Other"
   ],
+  "repository": {
+		"type": "git",
+		"url": "https://github.com/Strabi1/BKK-watcher"
+	},
   "activationEvents": ["onStartupFinished"],
   "main": "./out/extension.js",
   "contributes": {
@@ -35,7 +41,7 @@
     "@types/google-protobuf": "^3.15.12",
     "@types/mocha": "^10.0.2",
     "@types/node": "18.x",
-    "@types/vscode": "^1.87.0",
+    "@types/vscode": "^1.42.0",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@typescript-eslint/parser": "^6.7.3",
     "@vscode/test-electron": "^2.3.4",

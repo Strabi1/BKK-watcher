@@ -1,9 +1,5 @@
 # Change Log
 
-All notable changes to the "bkkwatcher" extension will be documented in this file.
+## v0.0.1
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+- Fixen mutatja a 134-es busz induálást a Huba utcai megállóból a Szentlélek tér felé.
