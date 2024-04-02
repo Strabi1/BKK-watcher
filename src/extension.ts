@@ -63,14 +63,12 @@ const url = `https://go.bkk.hu/api/query/v1/ws/gtfs-rt/full/TripUpdates.pb?key=$
 const routeId = '1340';             // Bus 134
 const stopId = 'F00496';            // Huba street
 
-let folder: string;
 let protoFile: string;
 let isEnabled: boolean = true;
 const maxTripCount = 3;
 
 export function activate(context: vscode.ExtensionContext) {
-	folder = vscode.workspace.workspaceFolders![0].uri.fsPath;
-	protoFile = path.join(folder, "gtfs-realtime.proto");
+	protoFile = path.join(__dirname, '..', 'resources', 'gtfs-realtime.proto');
 
 	let tripsLabel = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 2);
 		tripsLabel.text =  '134 Huba street';
