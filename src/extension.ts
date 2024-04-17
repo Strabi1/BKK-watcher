@@ -77,14 +77,16 @@ export function activate(context: vscode.ExtensionContext) {
 		context.subscriptions.push(tripsLabel);
 
 		const modifyTripsLabel = async () => {
-			const trips = await readAndProcessTrips();
+			const getTrips = await readAndProcessTrips(); 
+			const trips = await getTrips();
+
 			if(trips.length)
-			tripsLabel.text = trips;
+				tripsLabel.text = trips;
 	}
 	
 	modifyTripsLabel();
 	
-	let interval = setInterval(modifyTripsLabel, 15000);
+	let interval = setInterval(modifyTripsLabel, 5000);
 
     context.subscriptions.push(new vscode.Disposable(() => clearInterval(interval)));
 
@@ -92,7 +94,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('bkkwatcher.enable', async () => {
 			if(!isEnabled) {
 				modifyTripsLabel();
-				interval = setInterval(modifyTripsLabel, 15000);
+				interval = setInterval(modifyTripsLabel, 5000);
 				isEnabled = true;
 			}	
 		}),
@@ -108,18 +110,26 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() {}
 
-async function readAndProcessTrips(): Promise<string> {
-	const message = await readTrips();
+async function readAndProcessTrips(): Promise<() => Promise<string>>  {
+	let times: number[] = [];
+	let cnt: number = 0;
 
-	if(message == undefined)
-		return String();
+	return async function() {
+		++cnt;
 
-	const times = sortTrips(message);
-	const timesStr = createTimeString(times);
+		if(cnt % 3 === 1) {
+			const message = await readTrips();
 	
-	console.log(timesStr);
+			if(message === undefined)
+				return String();
+	
+			times = sortTrips(message);
+		}
 
-	return timesStr;
+		const timesStr = createTimeString(times);
+		
+		return timesStr;
+	}
 }
 
 async function readTrips(): Promise<FeedMessage | undefined> {
@@ -144,9 +154,9 @@ function sortTrips(message: FeedMessage): number[] {
 
 	if (message.entity) {
 		message.entity.forEach((entity: FeedEntity) => {
-			if(entity?.tripUpdate?.trip?.routeId == routeId) {
+			if(entity?.tripUpdate?.trip?.routeId === routeId) {
 				entity?.tripUpdate?.stopTimeUpdate.forEach((stopTime: StopTimeUpdate) => {
-					if(stopTime.stopId == stopId) {
+					if(stopTime.stopId === stopId) {
 						if(stopTime.departure?.time != undefined) {
 							const time = stopTime.departure.time;
 							times.push(time);
@@ -179,7 +189,7 @@ function createTimeString(times: number[]): string {
 		diffDate.getTimezoneOffset()
 		let diffStr: string = '';
 
-		if(cnt >= maxTripCount || diff < -30 * 1000)
+		if(cnt >= maxTripCount || diff < -5 * 1000)
 			return;
 
 		++cnt;
@@ -199,7 +209,6 @@ function createTimeString(times: number[]): string {
 			+ ':' + date.getSeconds().toString().padStart(2, '0')
 			+ ' (' + diffStr + ')';
 
-		// console.log(timeStr);
 		timesStr += timeStr + '  ';
 	})
 

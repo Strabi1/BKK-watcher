@@ -4,7 +4,7 @@
   "description": "Shows in real time when the next bus will arrive for the given bus route and given stop",
   "publisher": "StrahlBalazs",
   "icon": "resources/icon.png",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.42.0"
   },
